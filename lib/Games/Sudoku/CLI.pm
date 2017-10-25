@@ -5,7 +5,7 @@ use 5.010;
 
 use Games::Sudoku::Component::Controller;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub new {
     my ($class) = @_;

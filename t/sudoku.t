@@ -31,7 +31,7 @@ sub Games::Sudoku::CLI::get_input {
 }
 
 my @expected_intro = (
-    'Welcome to CLI Sudoku version 0.01',
+    'Welcome to CLI Sudoku version 0.02',
     'Would you like to start a new game, load saved game, or exit?',
     'Type in "n NUMBER" to start a new game with NUMBER empty slots',
     'Type in "l FILENAME" to load the file called FILENAME',
