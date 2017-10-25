@@ -16,20 +16,20 @@ sub new {
 sub play {
     my ($self) = @_;
 
-    $self->{ctrl} = Games::Sudoku::Component::Controller->new(size => 9);
-    $self->{ctrl}->solve;
-    $self->{ctrl}->make_blank(2);
+    $self->msg("Welcome to CLI Sudoku version $VERSION");
+
+    $self->start_game or return;
 
     while (1) {
         $self->print_as_grid;
         $self->get_input();
         if ($self->{input} eq 'x') {
             $self->msg('BYE');
-            return;  
+            return;
         }
         if ($self->{input} eq 'q') {
             $self->msg('quit game');
-            last;  
+            last;
         }
         $self->{ctrl}->set(@{ $self->{step} });
 
@@ -41,6 +41,44 @@ sub play {
     }
     return;
 }
+
+sub start_game {
+    my ($self) = @_;
+
+    while (1) {
+        $self->msg('Would you like to start a new game, load saved game, or exit?');
+        $self->msg('Type in "n NUMBER" to start a new game with NUMBER empty slots');
+        $self->msg('Type in "l FILENAME" to load the file called FILENAME');
+        $self->msg('Type x to exit');
+        $self->get_game_start_input();
+        if ($self->{input} eq 'x') {
+            $self->msg('BYE BYE');
+            return;
+        }
+        if ($self->{input} =~ /^n\s+(\d+)$/) {
+            my $blank = $1;
+            $self->{ctrl} = Games::Sudoku::Component::Controller->new(size => 9);
+            $self->{ctrl}->solve;
+            $self->{ctrl}->make_blank($blank);
+            last;
+        }
+        if ($self->{input} =~ /^l\s+(\S+)$/) {
+            my $filename = $1;
+            $self->{ctrl} = Games::Sudoku::Component::Controller->new(size => 9);
+            $self->{ctrl}->load(filename => $filename);
+        }
+        last;
+    }
+
+    return 1;
+}
+
+sub get_game_start_input {
+    my ($self) = @_;
+    $self->{input} = <STDIN>;
+    chomp $self->{input};
+}
+
 
 sub get_input {
     my ($self) = @_;
@@ -69,7 +107,7 @@ sub verify_input {
     }
     if ($row > 9 or $col > 9 or $value > 9) {
         $self->msg("Invalid values in: '$self->{input}'");
-        return; 
+        return;
     }
     if (not $self->{ctrl}->table->cell($row,$col)->is_allowed($value)) {
         $self->msg("Value $value is not allowed in ($row, $col)");
@@ -88,7 +126,7 @@ sub print_as_grid {
 
     my $size   = $table->{size};
     my $digit  = int(log($size) / log(10)) + 1;
- 
+
     print "    ";
     for my $c (1 .. $size) {
         print " $c ";
@@ -98,7 +136,7 @@ sub print_as_grid {
     }
     print "\n";
     say '   |' . '-' x 33;
-    
+
     foreach my $row (1..$size) {
         print " $row |";
         foreach my $col (1..$size) {
