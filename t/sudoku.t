@@ -19,6 +19,12 @@ sub Games::Sudoku::CLI::msg {
     push @output, $msg;
 }
 
+sub Games::Sudoku::CLI::prompt {
+    my ($self, $msg) = @_;
+    push @output, $msg;
+}
+
+
 sub Games::Sudoku::CLI::get_input {
     my ($self) = @_;
     $self->{input} = shift @input;
@@ -31,6 +37,7 @@ my @expected_intro = (
     'Type in "l FILENAME" to load the file called FILENAME',
     'Type x to exit',
 );
+my $prompt = 'Enter your choice (row, col, value) or [q-quit game, x-exit app]: ';
 
 subtest 'immediate exit' => sub {
     @input = (
@@ -46,6 +53,7 @@ subtest 'immediate exit' => sub {
         'BYE BYE',
     ];
 };
+
 
 subtest 'load and exit' => sub {
     @input = (
@@ -70,10 +78,15 @@ subtest 'load and exit' => sub {
     is_deeply \@output, [
         @expected_intro,
         $sudo_a,
+        $prompt,
         "Invalid format: '1,2,x'",
+        $prompt,
         'Value 7 is not allowed in (1, 1)',
+        $prompt,
         'Value 3 is not allowed in (1, 3)',
+        $prompt,
         $sudo_a2,
+        $prompt,
         'BYE',
     ];
 };

@@ -23,7 +23,7 @@ sub play {
     while (1) {
         $self->print_as_grid;
         while (1) {
-            print 'Enter your choice (row, col, value) or [q-quit game, x-exit app]: ';
+            $self->prompt('Enter your choice (row, col, value) or [q-quit game, x-exit app]: ');
             $self->get_input();
             $self->{input} = lc $self->{input};
             last if $self->verify_input();
@@ -152,6 +152,12 @@ sub print_as_grid {
 sub msg {
     my ($self, $msg) = @_;
     say $msg;
+    return;
+}
+
+sub prompt {
+    my ($self, $msg) = @_;
+    print $msg;
     return;
 }
 
