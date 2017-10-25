@@ -18,31 +18,39 @@ sub play {
 
     $self->msg("Welcome to CLI Sudoku version $VERSION");
 
-    $self->start_game or return;
-
     while (1) {
-        $self->print_as_grid;
+        $self->start_game or return;
+
         while (1) {
-            $self->prompt('Enter your choice (row, col, value) or [q-quit game, x-exit app]: ');
-            $self->get_input();
-            $self->{input} = lc $self->{input};
-            last if $self->verify_input();
-        }
-
-        if ($self->{input} eq 'x') {
-            $self->msg('BYE');
-            return;
-        }
-        if ($self->{input} eq 'q') {
-            $self->msg('quit game');
-            last;
-        }
-        $self->{ctrl}->set(@{ $self->{step} });
-
-        if ($self->{ctrl}->table->is_finished) {
             $self->print_as_grid;
-            $self->msg('DONE');
-            last;
+            while (1) {
+                $self->prompt('Enter your choice (row, col, value) or [q-quit game, x-exit app, h-hint]: ');
+                $self->get_input();
+                $self->{input} = lc $self->{input};
+                last if $self->verify_input();
+            }
+
+            if ($self->{input} eq 'h') {
+                for my $item ($self->{ctrl}->find_hints) {
+                    $self->msg(sprintf "%s, %s, %s", $item->row, $item->col, $item->allowed);
+                }
+                next;
+            }
+            if ($self->{input} eq 'x') {
+                $self->msg('BYE');
+                return;
+            }
+            if ($self->{input} eq 'q') {
+                $self->msg('quit game');
+                last;
+            }
+            $self->{ctrl}->set(@{ $self->{step} });
+
+            if ($self->{ctrl}->table->is_finished) {
+                $self->print_as_grid;
+                $self->msg('DONE');
+                last;
+            }
         }
     }
     return;
@@ -90,7 +98,7 @@ sub get_input {
 sub verify_input {
     my ($self) = @_;
 
-    if ($self->{input} =~ /^[xq]$/) {
+    if ($self->{input} =~ /^[xqh]$/) {
         return 1;
     }
 

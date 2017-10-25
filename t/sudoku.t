@@ -37,7 +37,7 @@ my @expected_intro = (
     'Type in "l FILENAME" to load the file called FILENAME',
     'Type x to exit',
 );
-my $prompt = 'Enter your choice (row, col, value) or [q-quit game, x-exit app]: ';
+my $prompt = 'Enter your choice (row, col, value) or [q-quit game, x-exit app, h-hint]: ';
 
 subtest 'immediate exit' => sub {
     @input = (
