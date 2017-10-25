@@ -45,4 +45,4 @@ MYMETA\.(?:yml|json)$
 
 # Avoid Padre development files
 \bprivlib
-
+.travis.yml
