@@ -54,6 +54,10 @@ subtest 'immediate exit' => sub {
 subtest 'load and exit' => sub {
     @input = (
         'l t/files/a.txt',
+        '1,2,x',
+        '1,1,7',
+        '1,3,3',
+        '1,3,4',
         'x',
     );
     @output = ();
@@ -61,12 +65,19 @@ subtest 'load and exit' => sub {
     Games::Sudoku::CLI->new->play;
     #diag explain \@output;
 
-    my $expected = slurp('t/files/a.txt');
-    chomp $expected;
+    my $sudo_a = slurp('t/files/a.txt');
+    chomp $sudo_a;
+
+    my $sudo_a2 = $sudo_a;
+    substr $sudo_a2, 4, 1, 4;
 
     is_deeply \@output, [
         @expected_intro,
-        $expected,
+        $sudo_a,
+        "Invalid format: '1,2,x'",
+        'Value 7 is not allowed in (1, 1)',
+        'Value 3 is not allowed in (1, 3)',
+        $sudo_a2,
         'BYE',
     ];
 };

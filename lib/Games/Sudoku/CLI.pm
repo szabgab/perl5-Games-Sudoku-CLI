@@ -22,7 +22,12 @@ sub play {
 
     while (1) {
         $self->print_as_grid;
-        $self->get_input();
+        while (1) {
+            print 'Enter your choice (row, col, value) or [q-quit game, x-exit app]: ';
+            $self->get_input();
+            last if $self->verify_input();
+        }
+
         if ($self->{input} eq 'x') {
             $self->msg('BYE');
             return;
@@ -75,20 +80,18 @@ sub start_game {
 
 sub get_game_start_input {
     my ($self) = @_;
+
     $self->{input} = <STDIN>;
     chomp $self->{input};
+    return;
 }
 
 
 sub get_input {
     my ($self) = @_;
+    $self->{input} = lc <STDIN>;
+    chomp $self->{input};
 
-    while (1) {
-        print 'Enter your choice (row, col, value) or [q-quit game, x-exit app]: ';
-        $self->{input} = lc <STDIN>;
-        chomp $self->{input};
-        last if $self->verify_input();
-    }
     return;
 }
 
