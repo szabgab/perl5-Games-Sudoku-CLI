@@ -125,3 +125,12 @@ sub msg {
 
 1;
 
+=pod
+
+=head1 NAME
+
+Games::Sudoku::CLI - play Sudoku on the command line
+
+=cut
+
+
