@@ -23,10 +23,6 @@ sub Games::Sudoku::CLI::get_input {
     my ($self) = @_;
     $self->{input} = shift @input;
 }
-sub Games::Sudoku::CLI::get_game_start_input {
-    my ($self) = @_;
-    $self->{input} = shift @input;
-}
 
 my @expected_intro = (
     'Welcome to CLI Sudoku version 0.01',

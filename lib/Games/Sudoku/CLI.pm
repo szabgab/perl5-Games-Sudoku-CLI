@@ -25,6 +25,7 @@ sub play {
         while (1) {
             print 'Enter your choice (row, col, value) or [q-quit game, x-exit app]: ';
             $self->get_input();
+            $self->{input} = lc $self->{input};
             last if $self->verify_input();
         }
 
@@ -55,7 +56,7 @@ sub start_game {
         $self->msg('Type in "n NUMBER" to start a new game with NUMBER empty slots');
         $self->msg('Type in "l FILENAME" to load the file called FILENAME');
         $self->msg('Type x to exit');
-        $self->get_game_start_input();
+        $self->get_input();
         if ($self->{input} eq 'x') {
             $self->msg('BYE BYE');
             return;
@@ -78,18 +79,9 @@ sub start_game {
     return 1;
 }
 
-sub get_game_start_input {
-    my ($self) = @_;
-
-    $self->{input} = <STDIN>;
-    chomp $self->{input};
-    return;
-}
-
-
 sub get_input {
     my ($self) = @_;
-    $self->{input} = lc <STDIN>;
+    $self->{input} = <STDIN>;
     chomp $self->{input};
 
     return;
