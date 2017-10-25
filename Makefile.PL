@@ -8,6 +8,7 @@ my %opts = (
           'Games::Sudoku::Component::Controller' => '0.02',
      },
 	 ABSTRACT_FROM => 'lib/Games/Sudoku/CLI.pm',
+    EXE_FILES    => ['bin/sudoku.pl'],
 );
 
 if (eval { ExtUtils::MakeMaker->VERSION(6.3002) }) {
