@@ -80,8 +80,8 @@ sub start_game {
             my $filename = $1;
             $self->{ctrl} = Games::Sudoku::Component::Controller->new(size => 9);
             $self->{ctrl}->load(filename => $filename);
+            last;
         }
-        last;
     }
 
     return 1;
@@ -179,5 +179,3 @@ sub prompt {
 Games::Sudoku::CLI - play Sudoku on the command line
 
 =cut
-
-
