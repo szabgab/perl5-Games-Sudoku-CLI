@@ -61,7 +61,7 @@ sub start_game {
 
     while (1) {
         $self->msg('Would you like to start a new game, load saved game, or exit?');
-        $self->msg('Type in "n NUMBER" to start a new game with NUMBER empty slots');
+        $self->msg('Type in "n NUMBER" or "n PERCENT%" to start a new game with NUMBER or PERCENT% empty slots');
         $self->msg('Type in "l FILENAME" to load the file called FILENAME');
         $self->msg('Type x to exit');
         $self->get_input();
@@ -69,8 +69,8 @@ sub start_game {
             $self->msg('BYE BYE');
             return;
         }
-        if ($self->{input} =~ /^n\s+(\d+)$/) {
-            my $blank = $1;
+        if ($self->{input} =~ /^n\s+(\d+)(?:(\.\d*)?(%))?$/) {
+            my $blank = $3 ? int(("$1".($2||"")) / 100.0 * 81) : $1;
             $self->{ctrl} = Games::Sudoku::Component::Controller->new(size => 9);
             $self->{ctrl}->solve;
             $self->{ctrl}->make_blank($blank);
