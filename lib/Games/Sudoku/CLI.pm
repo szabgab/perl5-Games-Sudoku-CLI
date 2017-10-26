@@ -71,6 +71,7 @@ sub start_game {
         }
         if ($self->{input} =~ /^n\s+(\d+)(?:(\.\d*)?(%))?$/) {
             my $blank = $3 ? int(("$1".($2||"")) / 100.0 * 81) : $1;
+            $blank = 1 if $blank < 1;
             $self->{ctrl} = Games::Sudoku::Component::Controller->new(size => 9);
             $self->{ctrl}->solve;
             $self->{ctrl}->make_blank($blank);
